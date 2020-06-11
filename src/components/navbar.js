@@ -14,6 +14,7 @@ function Navbar(){
         <NavItem label = "Home" link="#"/>
         <NavItem label = "Login" link="#/login"/>
         <NavItem label = "Cadastro" link="#/cadastro"/>
+        <NavItem label = "Papeis" link="#/papeis"/>
 
         </ul>
         <form className="form-inline my-2 my-lg-0">
