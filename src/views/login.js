@@ -4,6 +4,7 @@ import FormGroup from '../components/form-group'
 import {withRouter} from 'react-router-dom'
 import Axios from 'axios';
 
+var user;
 
 
 class Login extends React.Component{
@@ -21,17 +22,29 @@ class Login extends React.Component{
         email : "user@email.com"
     }
 
-    autentica = async () => {
+    autentica = () => {
             Axios.post('http://localhost:8080/api/user/autenticar', {
                 email: this.state.email,
                 senha: this.state.senha
             }).then( response => {
                 localStorage.setItem('_usuario_logado', JSON.stringify(response.data))
-                this.props.history.push('/papeis')
+                user = JSON.parse(localStorage.getItem('_usuario_logado'))
+                this.buscaPapeis()
+                setTimeout( () => {
+                    this.props.history.push('/papeis')}, 2000)  
             }).catch(erro => {
                 this.setState({mensagemErro: erro.response.data})
             })
-    }
+        }
+
+        buscaPapeis = () => {
+            Axios.get('http://localhost:8080/api/papel/' + JSON.parse(localStorage.getItem('_usuario_logado')).id).then(
+                response => {
+                    localStorage.setItem('_papeis_user', JSON.stringify(response.data))
+                }
+            )
+        }
+    
 
     limpa = () => {
         
@@ -63,13 +76,12 @@ class Login extends React.Component{
                                 onChange={(e) => this.setState({senha : e.target.value})}/>
                         </FormGroup>
                         <div className = "row" style = {{position: 'relative', left : '5px', padding: '10px'}}>
-                        <span class="badge badge-danger">{this.state.mensagemErro}</span>
+                        <span className="badge badge-danger">{this.state.mensagemErro}</span>
                         </div>
                         <div>
                             <button type="button" className="btn btn-outline-success" onClick={this.autentica}>Confirma</button>
                             <button type="button" className="btn btn-outline-danger" onClick={this.prepareCadastrar}>Cadastrar</button>
                         </div>
-                        
                     </Card>
                 </div>
             </div>

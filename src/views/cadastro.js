@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../components/card'
 import FormGroup from '../components/form-group'
 import {withRouter} from 'react-router-dom'
+import Axios from 'axios';
 
 
 class Cadastro extends React.Component{
@@ -13,9 +14,26 @@ class Cadastro extends React.Component{
         senha2 : ""
     }
 
+    user = {
+        nome : "",
+        email : "",
+        senha : ""
+    }
+
     cadastrar = () => {
         console.log(this.state)
-    }
+        this.user.nome = this.state.nome
+        this.user.email = this.state.email
+        this.user.senha = this.state.senha
+        console.log(this.user)
+        Axios.post('http://localhost:8080/api/user', {
+            nome: this.state.nome,
+            email: this.state.email,
+            senha: this.state.senha
+        }).then( response => {
+            console.log('salvo')
+            this.props.history.push('/login')}
+        )}
 
     cancelaCadastro = () => {
         this.props.history.push('/login')
@@ -23,6 +41,8 @@ class Cadastro extends React.Component{
 
     render(){
         return(
+            <div className = "row">
+            <div className = "col-md-6" style = {{position : 'relative', left : '300px'}}>
             <Card title="Cadastro de Usuário">
                 <div className="row"> 
                     <div className="col-lg-12">
@@ -61,6 +81,8 @@ class Cadastro extends React.Component{
                     </div>
                 </div>
             </Card>
+            </div>
+            </div>
         )
     }
 }

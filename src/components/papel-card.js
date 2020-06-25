@@ -31,6 +31,10 @@ class PapelCard extends React.Component{
                         {this.props.valor} 
                     </h5>
                 </div> 
+                <div>
+                    <button type="button" className="btn btn-outline-success" onClick={this.autentica}>Comprar</button>
+                    <button type="button" className="btn btn-outline-danger" onClick={this.prepareCadastrar}>Vender</button>
+                </div>
             </div>
         )
     }
