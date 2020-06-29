@@ -5,7 +5,7 @@ import PapelCard from '../components/papel-card';
 import Axios from 'axios';
 
 var user = JSON.parse(localStorage.getItem('_usuario_logado'))
-var title = 'Papeis do ' + user.nome;
+var title = 'Papeis'
 var papeis = [];
 var buffer = [];
 
@@ -20,27 +20,42 @@ class Papeis extends React.Component{
 
     imprimePapeis() {
         buffer = []
-        for(var i = 0; i < (JSON.parse(localStorage.getItem('_papeis_user'))).length; i++){
-            buffer.push(
-                <div  key={i} >
-                    <PapelCard
-                    nome={papeis[i].nome}
-                    quantidade={papeis[i].quantidade}
-                    valor={papeis[i].valor}>
-                    </PapelCard>
-                    <br></br>
-                </div>);
+        if(JSON.parse(localStorage.getItem('_papeis_user')) != null){
+            for(let i = 0; i < (JSON.parse(localStorage.getItem('_papeis_user'))).length; i++){
+                buffer.push(
+                    <div  key={i} value={i} onClick={((e) => this.selecionaPapel(e, i))} >
+                        <PapelCard
+                        nome={papeis[i].nome}
+                        quantidade={papeis[i].quantidade}
+                        valor={papeis[i].valor}>
+                        </PapelCard>
+                        <br></br>
+                    </div>);
+            }
+        }else{
+            this.props.history.push('')
         }
         return (
             buffer
         );
     }
 
+    selecionaPapel = (e, i) => {
+        localStorage.setItem('_papel', JSON.stringify(papeis[i]))
+        this.props.history.push('/vender')
+    }
+    
+
     componentWillMount(){
-        user = JSON.parse(localStorage.getItem('_usuario_logado'))
-        papeis = JSON.parse(localStorage.getItem('_papeis_user'))
-        title = 'Papeis do ' + user.nome;
-        console.log(papeis)
+        try {
+            user = JSON.parse(localStorage.getItem('_usuario_logado'))
+            papeis = JSON.parse(localStorage.getItem('_papeis_user'))
+            title = 'Papeis - ' + user.nome;
+            console.log(papeis)
+        } catch (error) {
+            this.props.history.push('')
+        }
+
     }
 
 

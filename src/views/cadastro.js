@@ -14,18 +14,7 @@ class Cadastro extends React.Component{
         senha2 : ""
     }
 
-    user = {
-        nome : "",
-        email : "",
-        senha : ""
-    }
-
     cadastrar = () => {
-        console.log(this.state)
-        this.user.nome = this.state.nome
-        this.user.email = this.state.email
-        this.user.senha = this.state.senha
-        console.log(this.user)
         Axios.post('http://localhost:8080/api/user', {
             nome: this.state.nome,
             email: this.state.email,
@@ -33,7 +22,7 @@ class Cadastro extends React.Component{
         }).then( response => {
             console.log('salvo')
             this.props.history.push('/login')}
-        )}
+    )}
 
     cancelaCadastro = () => {
         this.props.history.push('/login')

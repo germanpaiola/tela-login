@@ -13,7 +13,8 @@ class Login extends React.Component{
         nome : "",
         senha : "",
         email : "",
-        mensagemErro: null
+        mensagemErro: null,
+        mensagem: null
     }
 
     user = {
@@ -30,6 +31,7 @@ class Login extends React.Component{
                 localStorage.setItem('_usuario_logado', JSON.stringify(response.data))
                 user = JSON.parse(localStorage.getItem('_usuario_logado'))
                 this.buscaPapeis()
+                this.setState({mensagem: "carregando"})
                 setTimeout( () => {
                     this.props.history.push('/papeis')}, 2000)  
             }).catch(erro => {
@@ -45,7 +47,6 @@ class Login extends React.Component{
             )
         }
     
-
     limpa = () => {
         
     }
@@ -76,7 +77,8 @@ class Login extends React.Component{
                                 onChange={(e) => this.setState({senha : e.target.value})}/>
                         </FormGroup>
                         <div className = "row" style = {{position: 'relative', left : '5px', padding: '10px'}}>
-                        <span className="badge badge-danger">{this.state.mensagemErro}</span>
+                            <span className="badge badge-danger">{this.state.mensagemErro}</span>
+                            <span className="badge badge-warning">{this.state.mensagem}</span>
                         </div>
                         <div>
                             <button type="button" className="btn btn-outline-success" onClick={this.autentica}>Confirma</button>
